@@ -24,3 +24,36 @@ class DocumentTable(SQLModel, table=True):
     extracted_text: str | None = None
     metadata_json: str = "{}"
     created_at: datetime
+
+
+class EntityTable(SQLModel, table=True):
+    __tablename__ = "entities"
+
+    id: str = Field(primary_key=True)
+    project_id: str = Field(index=True)
+    type: str
+    label: str
+    properties_json: str = "{}"
+    source_document_id: str | None = None
+    created_at: datetime
+
+
+class RelationshipTable(SQLModel, table=True):
+    __tablename__ = "relationships"
+
+    id: str = Field(primary_key=True)
+    project_id: str = Field(index=True)
+    from_entity_id: str
+    type: str
+    to_entity_id: str
+    created_at: datetime
+
+
+class TimelineEventTable(SQLModel, table=True):
+    __tablename__ = "timeline_events"
+
+    id: str = Field(primary_key=True)
+    project_id: str = Field(index=True)
+    description: str
+    source_document_id: str | None = None
+    occurred_at: datetime

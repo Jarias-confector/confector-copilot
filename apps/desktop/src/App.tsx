@@ -1,20 +1,50 @@
 import { useEffect, useState } from "react";
-import { api, type DocumentItem, type Project, type Summary } from "./api";
+import {
+  api,
+  type DocumentItem,
+  type EntityItem,
+  type Project,
+  type Summary,
+  type TimelineEventItem,
+} from "./api";
 
 function ProjectCard({ project }: { project: Project }) {
   const [summary, setSummary] = useState<Summary | null>(null);
   const [documents, setDocuments] = useState<DocumentItem[]>([]);
+  const [entities, setEntities] = useState<EntityItem[]>([]);
+  const [timeline, setTimeline] = useState<TimelineEventItem[]>([]);
+  const [query, setQuery] = useState("");
+  const [results, setResults] = useState<EntityItem[] | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [uploading, setUploading] = useState(false);
+
+  const loadKnowledge = () => {
+    api.listEntities(project.id).then(setEntities).catch(() => {});
+    api.listTimeline(project.id).then(setTimeline).catch(() => {});
+  };
 
   const loadDocuments = () => {
     api
       .listDocuments(project.id)
       .then(setDocuments)
       .catch(() => setError("No se pudieron cargar los documentos."));
+    loadKnowledge();
   };
 
   useEffect(loadDocuments, [project.id]);
+
+  const handleSearch = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!query.trim()) {
+      setResults(null);
+      return;
+    }
+    try {
+      setResults(await api.search(project.id, query));
+    } catch {
+      setError("No se pudo buscar.");
+    }
+  };
 
   const handleSummary = async () => {
     try {
@@ -87,6 +117,55 @@ function ProjectCard({ project }: { project: Project }) {
         <pre className="mt-3 whitespace-pre-wrap rounded-md bg-slate-50 p-3 text-xs text-slate-700">
           {summary.content}
         </pre>
+      )}
+
+      {(entities.length > 0 || timeline.length > 0) && (
+        <div className="mt-4 border-t border-slate-100 pt-4">
+          <p className="mb-2 text-xs font-semibold uppercase text-slate-400">Conocimiento</p>
+
+          <form onSubmit={handleSearch} className="mb-3 flex gap-2">
+            <input
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              placeholder="Buscar (ej. Carlos)"
+              className="flex-1 rounded-md border border-slate-300 px-2 py-1 text-sm"
+            />
+            <button type="submit" className="rounded-md border border-slate-300 px-3 py-1 text-sm hover:bg-slate-50">
+              Buscar
+            </button>
+          </form>
+
+          {results !== null && (
+            <div className="mb-3 flex flex-wrap gap-1.5">
+              {results.length === 0 && <span className="text-xs text-slate-400">Sin resultados.</span>}
+              {results.map((r) => (
+                <span key={r.id} className="rounded bg-amber-100 px-2 py-0.5 text-xs text-amber-800">
+                  {r.type}: {r.label}
+                </span>
+              ))}
+            </div>
+          )}
+
+          {entities.length > 0 && (
+            <div className="mb-3 flex flex-wrap gap-1.5">
+              {entities.map((e) => (
+                <span key={e.id} className="rounded bg-slate-100 px-2 py-0.5 text-xs text-slate-600">
+                  {e.type}: {e.label}
+                </span>
+              ))}
+            </div>
+          )}
+
+          {timeline.length > 0 && (
+            <ul className="flex flex-col gap-1">
+              {timeline.map((t) => (
+                <li key={t.id} className="text-xs text-slate-500">
+                  {new Date(t.occurred_at).toLocaleString()} — {t.description}
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
       )}
     </li>
   );

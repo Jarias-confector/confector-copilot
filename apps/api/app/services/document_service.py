@@ -43,7 +43,13 @@ class DocumentService:
 
         self._event_bus.publish(
             event_types.DOCUMENT_PROCESSED,
-            {"document_id": document.id, "kind": kind.value, "extracted": document.extracted_text is not None},
+            {
+                "document_id": document.id,
+                "filename": filename,
+                "kind": kind.value,
+                "extracted": document.extracted_text is not None,
+                "extracted_text": document.extracted_text,
+            },
             project_id=project_id,
         )
         return document

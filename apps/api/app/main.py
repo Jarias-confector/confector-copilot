@@ -2,7 +2,9 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from app.api.documents import router as documents_router
+from app.api.knowledge import router as knowledge_router
 from app.api.projects import router as projects_router
+from app.dependencies import wire_event_subscribers
 from app.logging import logger
 
 app = FastAPI(title="CONFECTOR Copilot API", version="0.1.0")
@@ -16,6 +18,7 @@ app.add_middleware(
 
 app.include_router(projects_router)
 app.include_router(documents_router)
+app.include_router(knowledge_router)
 
 
 @app.get("/health")
@@ -25,4 +28,5 @@ def health():
 
 @app.on_event("startup")
 def on_startup():
+    wire_event_subscribers()
     logger.info("CONFECTOR Copilot API arrancó — walking skeleton")

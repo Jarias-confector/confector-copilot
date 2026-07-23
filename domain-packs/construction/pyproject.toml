@@ -1,11 +1,9 @@
 [project]
-name = "confector-database"
+name = "confector-construction"
 version = "0.1.0"
-description = "Infrastructure layer: SQLite/SQLModel, Repository Pattern (11_DEVELOPMENT_GUIDELINES §15)."
+description = "Vocabulario y reglas de gerencia de proyectos de construcción (ADR-003). Depende de knowledge-os, nunca al revés."
 requires-python = ">=3.12"
 dependencies = [
-    "sqlmodel>=0.0.22",
-    "confector-core",
     "confector-knowledge-os",
 ]
 

@@ -25,6 +25,33 @@ export interface DocumentItem {
   created_at: string;
 }
 
+export interface EntityItem {
+  id: string;
+  project_id: string;
+  type: string;
+  label: string;
+  properties: Record<string, unknown>;
+  source_document_id: string | null;
+  created_at: string;
+}
+
+export interface RelationshipItem {
+  id: string;
+  project_id: string;
+  from_entity_id: string;
+  type: string;
+  to_entity_id: string;
+  created_at: string;
+}
+
+export interface TimelineEventItem {
+  id: string;
+  project_id: string;
+  description: string;
+  source_document_id: string | null;
+  occurred_at: string;
+}
+
 async function request<T>(path: string, init?: RequestInit): Promise<T> {
   const res = await fetch(`${API_BASE}${path}`, {
     headers: init?.body instanceof FormData ? undefined : { "Content-Type": "application/json" },
@@ -55,4 +82,10 @@ export const api = {
       body: formData,
     });
   },
+  listEntities: (projectId: string) => request<EntityItem[]>(`/projects/${projectId}/entities`),
+  listRelationships: (projectId: string) =>
+    request<RelationshipItem[]>(`/projects/${projectId}/relationships`),
+  listTimeline: (projectId: string) => request<TimelineEventItem[]>(`/projects/${projectId}/timeline`),
+  search: (projectId: string, query: string) =>
+    request<EntityItem[]>(`/projects/${projectId}/search?q=${encodeURIComponent(query)}`),
 };

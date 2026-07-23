@@ -1,0 +1,15 @@
+[project]
+name = "confector-knowledge-os"
+version = "0.1.0"
+description = "Núcleo agnóstico de dominio: entidades, relaciones, timeline, grafo, búsqueda (12_PROJECT_STRUCTURE §7, ADR-003)."
+requires-python = ">=3.12"
+dependencies = [
+    "networkx>=3.3",
+]
+
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["src"]

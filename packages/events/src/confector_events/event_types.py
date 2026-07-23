@@ -4,3 +4,7 @@
 DOCUMENT_UPLOADED = "DocumentUploaded"
 DOCUMENT_PROCESSED = "DocumentProcessed"
 PROJECT_CREATED = "ProjectCreated"
+ENTITY_DETECTED = "EntityDetected"
+RELATIONSHIP_DETECTED = "RelationshipDetected"
+KNOWLEDGE_UPDATED = "KnowledgeUpdated"
+TIMELINE_UPDATED = "TimelineUpdated"

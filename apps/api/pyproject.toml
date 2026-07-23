@@ -19,6 +19,8 @@ dependencies = [
     "confector-ai-models",
     "confector-ai-tools",
     "confector-exporters",
+    "confector-knowledge-os",
+    "confector-construction",
 ]
 
 [build-system]
