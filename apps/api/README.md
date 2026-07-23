@@ -9,7 +9,7 @@ Backend FastAPI local (ADR-002, ADR-004). Capas: `api/` (endpoints) → `service
 ```powershell
 cd "confector-copilot"
 python -m venv .venv
-.venv\Scripts\pip install -e packages\core -e packages\database -e ai\models -e packages\exporters -e apps\api
+.venv\Scripts\pip install -e packages\core -e packages\database -e packages\events -e ai\models -e packages\exporters -e apps\api
 ```
 
 ## Ejecutar

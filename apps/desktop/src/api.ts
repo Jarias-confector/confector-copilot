@@ -14,9 +14,19 @@ export interface Summary {
   content: string;
 }
 
+export interface DocumentItem {
+  id: string;
+  project_id: string;
+  filename: string;
+  kind: string;
+  size_bytes: number;
+  extracted_text: string | null;
+  created_at: string;
+}
+
 async function request<T>(path: string, init?: RequestInit): Promise<T> {
   const res = await fetch(`${API_BASE}${path}`, {
-    headers: { "Content-Type": "application/json" },
+    headers: init?.body instanceof FormData ? undefined : { "Content-Type": "application/json" },
     ...init,
   });
   if (!res.ok) {
@@ -34,4 +44,14 @@ export const api = {
     }),
   generateSummary: (projectId: string) =>
     request<Summary>(`/projects/${projectId}/summary`, { method: "POST" }),
+  listDocuments: (projectId: string) =>
+    request<DocumentItem[]>(`/projects/${projectId}/documents`),
+  uploadDocument: (projectId: string, file: File) => {
+    const formData = new FormData();
+    formData.append("file", file);
+    return request<DocumentItem>(`/projects/${projectId}/documents`, {
+      method: "POST",
+      body: formData,
+    });
+  },
 };

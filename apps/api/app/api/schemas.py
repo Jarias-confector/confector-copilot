@@ -20,3 +20,13 @@ class SummaryOut(BaseModel):
     project_id: str
     file: str
     content: str
+
+
+class DocumentOut(BaseModel):
+    id: str
+    project_id: str
+    filename: str
+    kind: str
+    size_bytes: int
+    extracted_text: str | None
+    created_at: datetime

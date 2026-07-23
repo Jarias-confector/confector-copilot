@@ -19,5 +19,9 @@ class Settings(BaseSettings):
     def exports_dir(self) -> Path:
         return self.storage_dir / "exports"
 
+    @property
+    def projects_dir(self) -> Path:
+        return self.storage_dir / "projects"
+
 
 settings = Settings()
