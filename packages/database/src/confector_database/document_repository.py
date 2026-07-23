@@ -1,3 +1,5 @@
+import json
+
 from confector_core import Document, DocumentKind
 from sqlmodel import Session, select
 
@@ -19,6 +21,7 @@ class SqliteDocumentRepository:
             size_bytes=document.size_bytes,
             storage_path=document.storage_path,
             extracted_text=document.extracted_text,
+            metadata_json=json.dumps(document.metadata),
             created_at=document.created_at,
         )
         with Session(self._engine) as session:
@@ -42,5 +45,6 @@ class SqliteDocumentRepository:
             size_bytes=row.size_bytes,
             storage_path=row.storage_path,
             extracted_text=row.extracted_text,
+            metadata=json.loads(row.metadata_json or "{}"),
             created_at=row.created_at,
         )

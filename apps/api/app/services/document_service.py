@@ -3,7 +3,7 @@ from pathlib import Path
 from confector_core import Document, DocumentRepository
 from confector_events import EventBus, event_types
 
-from app.workers.document_processor import classify, extract_text
+from app.workers.document_processor import classify, extract
 
 
 class DocumentService:
@@ -36,7 +36,9 @@ class DocumentService:
             project_id=project_id,
         )
 
-        document.extracted_text = extract_text(kind, content)
+        result = extract(kind, content)
+        document.extracted_text = result.text
+        document.metadata = result.metadata
         self._repository.add(document)
 
         self._event_bus.publish(

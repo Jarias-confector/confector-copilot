@@ -22,4 +22,5 @@ class DocumentTable(SQLModel, table=True):
     size_bytes: int
     storage_path: str
     extracted_text: str | None = None
+    metadata_json: str = "{}"
     created_at: datetime

@@ -70,6 +70,11 @@ function ProjectCard({ project }: { project: Project }) {
                 {doc.kind}
               </span>
               <span>{doc.filename}</span>
+              {Object.entries(doc.metadata).map(([key, value]) => (
+                <span key={key} className="text-xs text-slate-400">
+                  {key}: {value}
+                </span>
+              ))}
               <span className="text-xs text-slate-400">
                 {doc.extracted_text ? "procesado" : "sin extracción"}
               </span>

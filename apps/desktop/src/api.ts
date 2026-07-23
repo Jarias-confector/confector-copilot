@@ -21,6 +21,7 @@ export interface DocumentItem {
   kind: string;
   size_bytes: number;
   extracted_text: string | null;
+  metadata: Record<string, string | number>;
   created_at: string;
 }
 

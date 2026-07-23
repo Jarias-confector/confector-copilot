@@ -10,6 +10,8 @@ class DocumentKind(str, Enum):
     PDF = "pdf"
     WORD = "word"
     EXCEL = "excel"
+    CSV = "csv"
+    PRESENTATION = "presentation"
     TEXT = "text"
     AUDIO = "audio"
     OTHER = "other"
@@ -26,4 +28,5 @@ class Document:
     storage_path: str
     id: str = field(default_factory=lambda: str(uuid4()))
     extracted_text: str | None = None
+    metadata: dict = field(default_factory=dict)
     created_at: datetime = field(default_factory=lambda: datetime.now(UTC))

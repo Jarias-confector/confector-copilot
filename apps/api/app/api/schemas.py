@@ -29,4 +29,5 @@ class DocumentOut(BaseModel):
     kind: str
     size_bytes: int
     extracted_text: str | None
+    metadata: dict
     created_at: datetime
