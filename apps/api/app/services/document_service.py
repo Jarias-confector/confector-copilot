@@ -36,7 +36,7 @@ class DocumentService:
             project_id=project_id,
         )
 
-        result = extract(kind, content)
+        result = extract(kind, content, filename)
         document.extracted_text = result.text
         document.metadata = result.metadata
         self._repository.add(document)

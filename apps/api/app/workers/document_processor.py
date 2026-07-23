@@ -34,8 +34,8 @@ def classify(filename: str) -> DocumentKind:
     return _EXTENSION_KIND.get(Path(filename).suffix.lower(), DocumentKind.OTHER)
 
 
-def extract(kind: DocumentKind, content: bytes) -> Extraction:
-    """Extracción inicial + metadatos (10_MVP_ROADMAP Sprint 2). Audio se procesa en Sprint 3 (Whisper)."""
+def extract(kind: DocumentKind, content: bytes, filename: str = "") -> Extraction:
+    """Extracción inicial + metadatos (10_MVP_ROADMAP Sprint 2/3)."""
     try:
         if kind == DocumentKind.PDF:
             return _extract_pdf(content)
@@ -49,6 +49,8 @@ def extract(kind: DocumentKind, content: bytes) -> Extraction:
             return _extract_pptx(content)
         if kind == DocumentKind.TEXT:
             return _extract_text(content)
+        if kind == DocumentKind.AUDIO:
+            return _extract_audio(content, Path(filename).suffix or ".wav")
     except Exception:
         return Extraction(text=None, metadata={"error": "no se pudo extraer el contenido"})
     return Extraction(text=None)
@@ -124,3 +126,13 @@ def _extract_pptx(content: bytes) -> Extraction:
 def _extract_text(content: bytes) -> Extraction:
     text = content.decode("utf-8", errors="replace")
     return Extraction(text=text[:_MAX_EXTRACT_CHARS], metadata={"chars": len(text), "words": len(text.split())})
+
+
+def _extract_audio(content: bytes, suffix: str) -> Extraction:
+    from confector_ai_tools import transcribe
+
+    result = transcribe(content, suffix)
+    if result.error:
+        return Extraction(text=None, metadata={"error": result.error})
+    metadata = {"language": result.language, "duration_seconds": result.duration_seconds, "segments": result.segments}
+    return Extraction(text=(result.text or "")[:_MAX_EXTRACT_CHARS] or None, metadata=metadata)

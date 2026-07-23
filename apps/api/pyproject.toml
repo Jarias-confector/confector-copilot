@@ -17,6 +17,7 @@ dependencies = [
     "confector-database",
     "confector-events",
     "confector-ai-models",
+    "confector-ai-tools",
     "confector-exporters",
 ]
 
