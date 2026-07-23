@@ -1,0 +1,16 @@
+[project]
+name = "confector-database"
+version = "0.1.0"
+description = "Infrastructure layer: SQLite/SQLModel, Repository Pattern (11_DEVELOPMENT_GUIDELINES §15)."
+requires-python = ">=3.12"
+dependencies = [
+    "sqlmodel>=0.0.22",
+    "confector-core",
+]
+
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["src"]

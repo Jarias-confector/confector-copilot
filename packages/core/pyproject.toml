@@ -1,0 +1,13 @@
+[project]
+name = "confector-core"
+version = "0.1.0"
+description = "Dominio genérico de la plataforma Confector (Project/User/Company). Sin dependencias de framework. ADR-003."
+requires-python = ">=3.12"
+dependencies = []
+
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["src"]

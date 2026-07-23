@@ -1,0 +1,15 @@
+[project]
+name = "confector-exporters"
+version = "0.1.0"
+description = "Conversión de conocimiento a formatos de salida (12§6.4). MVP: Markdown. DOCX/PDF/PPTX se agregan cuando el flujo lo requiera."
+requires-python = ">=3.12"
+dependencies = [
+    "confector-core",
+]
+
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["src"]
